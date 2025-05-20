@@ -7,7 +7,7 @@ const supabase = createClient(
 )
 
 export default function Home() {
-  const [suíte, setSuíte] = useState('')
+  const [suite, setsuite] = useState('')
   const [nota, setNota] = useState(null)
   const [comentario, setComentario] = useState('')
   const [enviado, setEnviado] = useState(false)
@@ -25,7 +25,7 @@ export default function Home() {
 
     const { error } = await supabase.from('respostas_nps').insert([
       {
-        suíte: suíte,
+        suite: suite,
         score: nota,
         comentario: comentario,
       },
@@ -35,7 +35,7 @@ export default function Home() {
       setErro(true)
     } else {
       setEnviado(true)
-      setSuite('')
+      setsuite('')
       setNota(null)
       setComentario('')
     }
@@ -45,11 +45,11 @@ export default function Home() {
     <div style={{ padding: '2rem', fontFamily: 'Arial' }}>
       <h2>Pesquisa de Satisfação</h2>
       <form onSubmit={handleSubmit}>
-        <label>Número da suíte:</label><br />
+        <label>Número da suite:</label><br />
         <input
           type="text"
           value={suite}
-          onChange={(e) => setSuite(e.target.value)}
+          onChange={(e) => setsuite(e.target.value)}
           style={{ marginBottom: '1rem', padding: '0.5rem', width: '100%' }}
         /><br />
 
