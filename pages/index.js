@@ -7,9 +7,9 @@ const supabase = createClient(
 )
 
 export default function Home() {
-  const [Apartamento, setApartamento] = useState('')
+  const [apartamento, setapartamento] = useState('')
   const [nota, setNota] = useState(null)
-  const [comentario, setComentario] = useState('')
+  const [comentario, setcomentario] = useState('')
   const [enviado, setEnviado] = useState(false)
   const [erro, setErro] = useState(false)
 
@@ -18,14 +18,14 @@ export default function Home() {
     setErro(false)
     setEnviado(false)
 
-    if (Apartamento.trim() === '' || nota === null) {
+    if (apartamento.trim() === '' || nota === null) {
       setErro(true)
       return
     }
 
     const { error } = await supabase.from('respostas_nps').insert([
       {
-        Apartamento: Apartamento,
+        apartamento: apartamento,
         score: nota,
         comentario: comentario,
       },
@@ -35,9 +35,9 @@ export default function Home() {
       setErro(true)
     } else {
       setEnviado(true)
-      setApartamento('')
+      setapartamento('')
       setNota(null)
-      setComentario('')
+      setcomentario('')
     }
   }
 
@@ -45,11 +45,11 @@ export default function Home() {
     <div style={{ padding: '2rem', fontFamily: 'Arial' }}>
       <h2>Pesquisa de Satisfação</h2>
       <form onSubmit={handleSubmit}>
-        <label>Número da Apartamento:</label><br />
+        <label>Número da apartamento:</label><br />
         <input
           type="text"
-          value={Apartamento}
-          onChange={(e) => setApartamento(e.target.value)}
+          value={apartamento}
+          onChange={(e) => setapartamento(e.target.value)}
           style={{ marginBottom: '1rem', padding: '0.5rem', width: '100%' }}
         /><br />
 
@@ -78,7 +78,7 @@ export default function Home() {
         <label>Observações e/ou elogios:</label><br />
         <textarea
           value={comentario}
-          onChange={(e) => setComentario(e.target.value)}
+          onChange={(e) => setcomentario(e.target.value)}
           rows="4"
           style={{ width: '100%', padding: '0.5rem' }}
         ></textarea><br /><br />
