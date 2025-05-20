@@ -6,10 +6,15 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 )
 
+const coresNotas = [
+  '#b91c1c', '#dc2626', '#f97316', '#fb923c', '#facc15',
+  '#fde047', '#fef08a', '#a3e635', '#65a30d', '#4d7c0f', '#15803d'
+]
+
 export default function Home() {
-  const [apartamento, setapartamento] = useState('')
+  const [apartamento, setApartamento] = useState('')
   const [nota, setNota] = useState(null)
-  const [comentario, setcomentario] = useState('')
+  const [comentario, setComentario] = useState('')
   const [enviado, setEnviado] = useState(false)
   const [erro, setErro] = useState(false)
 
@@ -35,21 +40,26 @@ export default function Home() {
       setErro(true)
     } else {
       setEnviado(true)
-      setapartamento('')
+      setApartamento('')
       setNota(null)
-      setcomentario('')
+      setComentario('')
     }
   }
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'Arial' }}>
-      <h2>Pesquisa de Satisfação</h2>
+    <div style={{ padding: '2rem', fontFamily: 'Arial', maxWidth: 600, margin: 'auto' }}>
+      <img
+        src="/Design sem nome (1).png"
+        alt="Cerro Azul Hotel Fazenda"
+        style={{ width: 200, display: 'block', margin: '0 auto 2rem auto' }}
+      />
+      <h2 style={{ textAlign: 'center' }}>Pesquisa de Satisfação</h2>
       <form onSubmit={handleSubmit}>
-        <label>Número da apartamento:</label><br />
+        <label>Número do apartamento:</label><br />
         <input
           type="text"
           value={apartamento}
-          onChange={(e) => setapartamento(e.target.value)}
+          onChange={(e) => setApartamento(e.target.value)}
           style={{ marginBottom: '1rem', padding: '0.5rem', width: '100%' }}
         /><br />
 
@@ -62,11 +72,12 @@ export default function Home() {
               onClick={() => setNota(num)}
               style={{
                 margin: '0.2rem',
-                padding: '0.5rem 1rem',
-                backgroundColor: nota === num ? '#0070f3' : '#e0e0e0',
-                color: nota === num ? '#fff' : '#000',
+                padding: '0.7rem 1rem',
+                backgroundColor: nota === num ? '#000' : coresNotas[num],
+                color: nota === num ? '#fff' : '#fff',
                 border: 'none',
-                borderRadius: '4px',
+                borderRadius: '6px',
+                fontWeight: 'bold',
                 cursor: 'pointer',
               }}
             >
@@ -78,7 +89,7 @@ export default function Home() {
         <label>Observações e/ou elogios:</label><br />
         <textarea
           value={comentario}
-          onChange={(e) => setcomentario(e.target.value)}
+          onChange={(e) => setComentario(e.target.value)}
           rows="4"
           style={{ width: '100%', padding: '0.5rem' }}
         ></textarea><br /><br />
@@ -91,7 +102,8 @@ export default function Home() {
             padding: '0.75rem 2rem',
             border: 'none',
             borderRadius: '4px',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            fontWeight: 'bold'
           }}
         >
           Enviar resposta
