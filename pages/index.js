@@ -7,7 +7,7 @@ const supabase = createClient(
 )
 
 export default function Home() {
-  const [suite, setSuite] = useState('')
+  const [suíte, setSuíte] = useState('')
   const [nota, setNota] = useState(null)
   const [comentario, setComentario] = useState('')
   const [enviado, setEnviado] = useState(false)
@@ -25,7 +25,7 @@ export default function Home() {
 
     const { error } = await supabase.from('respostas_nps').insert([
       {
-        suite: suite,
+        suíte: suíte,
         score: nota,
         comentario: comentario,
       },
