@@ -7,7 +7,7 @@ const supabase = createClient(
 )
 
 export default function Home() {
-  const [suíte, setSuíte] = useState('')
+  const [suite, setSuite] = useState('')
   const [nota, setNota] = useState(null)
   const [comentario, setComentario] = useState('')
   const [enviado, setEnviado] = useState(false)
@@ -18,14 +18,14 @@ export default function Home() {
     setErro(false)
     setEnviado(false)
 
-    if (!nota || !suíte) {
+    if (suite.trim() === '' || nota === null) {
       setErro(true)
       return
     }
 
     const { error } = await supabase.from('respostas_nps').insert([
       {
-        suite: suíte,
+        suite: suite,
         score: nota,
         comentario: comentario,
       },
@@ -35,7 +35,7 @@ export default function Home() {
       setErro(true)
     } else {
       setEnviado(true)
-      setSuíte('')
+      setSuite('')
       setNota(null)
       setComentario('')
     }
@@ -48,8 +48,8 @@ export default function Home() {
         <label>Número da suíte:</label><br />
         <input
           type="text"
-          value={suíte}
-          onChange={(e) => setSuíte(e.target.value)}
+          value={suite}
+          onChange={(e) => setSuite(e.target.value)}
           style={{ marginBottom: '1rem', padding: '0.5rem', width: '100%' }}
         /><br />
 
