@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -7,94 +7,70 @@ const supabase = createClient(
 );
 
 export default function Home() {
+  const [suite, setSuite] = useState('');
   const [score, setScore] = useState(null);
-  const [comentario, setComentario] = useState("");
-  const [suite, setSuite] = useState("");
+  const [comentario, setComentario] = useState('');
 
-  const enviarResposta = async () => {
-    if (!score || !suite) {
-      alert("Preencha todos os campos obrigatórios.");
+  const handleSubmit = async () => {
+    if (!suite || score === null) {
+      alert('Por favor, preencha o número da suíte e a nota.');
       return;
     }
 
-    const { data, error } = await supabase.from("respostas_nps").insert([
+    const { error } = await supabase.from('respostas_nps').insert([
       {
-        score,
-        comentário: comentario,
         suite,
-      },
+        score,
+        comentário: comentario
+      }
     ]);
 
     if (error) {
-      console.error("Erro ao enviar:", error);
-      alert("Erro ao enviar. Tente novamente.");
+      alert('Erro ao enviar. Tente novamente.');
     } else {
-      alert("Resposta enviada com sucesso!");
+      alert('Resposta enviada com sucesso!');
+      setSuite('');
       setScore(null);
-      setComentario("");
-      setSuite("");
+      setComentario('');
     }
   };
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h2>Pesquisa de Satisfação</h2>
-
-      <label>
-        Número da Suíte: <br />
-        <input
-          type="text"
-          value={suite}
-          onChange={(e) => setSuite(e.target.value)}
-          required
-        />
-      </label>
-
-      <div style={{ marginTop: "1rem" }}>
-        <p>De 0 a 10, quanto você recomendaria o hotel a um amigo?</p>
-        {[...Array(11).keys()].map((num) => (
+    <div style={{ padding: 20 }}>
+      <h1>Pesquisa de Satisfação</h1>
+      <label>Número da suíte:</label>
+      <input
+        type="text"
+        value={suite}
+        onChange={(e) => setSuite(e.target.value)}
+      />
+      <p>De 0 a 10, o quanto você recomendaria o Cerro Azul Hotel Fazenda para um amigo ou familiar?</p>
+      <div style={{ display: 'flex', gap: 5 }}>
+        {Array.from({ length: 11 }, (_, i) => (
           <button
-            key={num}
-            onClick={() => setScore(num)}
+            key={i}
+            onClick={() => setScore(i)}
             style={{
-              margin: "2px",
-              background: score === num ? "green" : "#eee",
-              padding: "8px",
+              backgroundColor: score === i ? '#0070f3' : '#eaeaea',
+              color: score === i ? '#fff' : '#000',
+              padding: 10
             }}
           >
-            {num}
+            {i}
           </button>
         ))}
       </div>
-
-      <div style={{ marginTop: "1rem" }}>
-        <label>
-          Observações / elogios:
-          <br />
-          <textarea
-            rows="4"
-            cols="40"
-            value={comentario}
-            onChange={(e) => setComentario(e.target.value)}
-          />
-        </label>
-      </div>
-
       <br />
-      <button
-        onClick={enviarResposta}
-        style={{
-          marginTop: "1rem",
-          padding: "10px 20px",
-          backgroundColor: "green",
-          color: "#fff",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
+      <textarea
+        placeholder="Observações e/ou elogios:"
+        value={comentario}
+        onChange={(e) => setComentario(e.target.value)}
+        style={{ width: '100%', height: 100 }}
+      />
+      <br />
+      <button onClick={handleSubmit} style={{ padding: 10, marginTop: 10 }}>
         Enviar resposta
       </button>
     </div>
   );
 }
-
